@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import notecontext from "../context/notes/Notecontext";
 import { useContext } from "react";
 import Notesitem from "./Notesitem";
