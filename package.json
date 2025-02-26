@@ -6,9 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "server": "nodemon backend/index.js",
     "lint": "eslint .",
     "preview": "vite preview",
-    "both":"concurrently \"npm run dev\" \"nodemon backend/index.js\""
+    "both": "concurrently \"npm run dev\" \"nodemon backend/index.js\""
   },
   "dependencies": {
     "concurrently": "^9.1.2",
@@ -26,6 +27,7 @@
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.18",
     "globals": "^15.14.0",
+    "nodemon": "^3.1.9",
     "vite": "^6.1.0"
   }
 }
