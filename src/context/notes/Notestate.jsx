@@ -42,12 +42,14 @@ setnotes(notes.concat(note))
 }
 
 // delete a note 
-const deletenote =()=>{
-    
+const deletenote =(id)=>{
+    console.log("deleting the note"+id)
+    const newnotes = notes.filter((note)=>{return note._id!==id})
+    setnotes(newnotes)
 }
 
 //edit a note
-const editnote =()=>{
+const editnote =(id,title,description,tag)=>{
     
 }
 
