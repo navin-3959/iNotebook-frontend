@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import notecontext from "../context/notes/Notecontext";
-import { useContext } from "react";
+import { useContext,useEffect } from "react";
 import Notesitem from "./Notesitem";
 import Addnote from "./Addnote";
 
@@ -8,8 +8,13 @@ export default function Notes() {
 
 
     const context = useContext(notecontext)
-    const { notes, addnote } = context;
-
+    const { notes, addnote,getnotes } = context;
+   useEffect(() => {
+    
+  
+    getnotes()
+  }, [])
+  
 
     return (
         <>
