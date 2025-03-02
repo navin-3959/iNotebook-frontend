@@ -20,7 +20,7 @@ const Notestate = (props) => {
             },
         })
         const json = await response.json()
-        console.log("Before adding:", json);
+        
         setnotes(json)
         // setnotes([...new Map(json.map(n => [n._id, n])).values()]);
     }
@@ -37,23 +37,23 @@ const Notestate = (props) => {
             },
             body: JSON.stringify({ title, description, tag })
         })
-
+        const json = await response.json()
         console.log("Before adding:", notes);
-        const note = await response.json()
-        // let note = {
-        //     "_id": "67b3611cbbca821675cf7248",
-        //     "user": "67b3540a11e1bdc679c0a2c2a",
-        //     "title": title,
-        //     "description": description,
-        //     "tag": tag,
-        //     "date": "2025-02-17T16:17:32.072Z",
-        //     "__v": 0
-        // }
-        // setnotes(notes.concat(note))
-        setnotes(prevNotes => {
-            const uniqueNotes = [...new Map([...prevNotes, note].map(n => [n._id, n])).values()];
-            return uniqueNotes;
-        });
+        let note = await response.json()
+         note = {
+            "_id": "67b3611cbbca821675cf7248",
+            "user": "67b3540a11e1bdc679c0a2c2a",
+            "title": title,
+            "description": description,
+            "tag": tag,
+            "date": "2025-02-17T16:17:32.072Z",
+            "__v": 0
+        }
+        setnotes(notes.concat(note))
+        // setnotes(prevNotes => {
+        //     const uniqueNotes = [...new Map([...prevNotes, note].map(n => [n._id, n])).values()];
+        //     return uniqueNotes;
+        // });
 
     }
 
@@ -78,7 +78,7 @@ const Notestate = (props) => {
     const editnote = async (id, title, description, tag) => {
         //api call
 
-        const response = await fetch(`${host}/api/notes//updatenote/${id}`, {
+        const response = await fetch(`${host}/api/notes/updatenote/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -86,10 +86,10 @@ const Notestate = (props) => {
             },
             body: JSON.stringify({ title, description, tag })
         })
-        const json = await response.json()
+        
 
 
-
+        const updatedNote = await response.json();
         //logic to edit in client 
         setnotes((prevNotes) =>
             prevNotes.map((note) =>

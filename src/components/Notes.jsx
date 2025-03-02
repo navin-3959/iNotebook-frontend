@@ -8,29 +8,43 @@ export default function Notes() {
 
 
     const context = useContext(notecontext)
-    const { notes, addnote, getnotes } = context;
+    const { notes, addnote, getnotes, editnote } = context;
     useEffect(() => {
         getnotes()
     }, []);
+    const refclose = useRef(null)
     const ref = useRef(null)
     const updatenote = (currentnote) => {
-        console.log("Updating Note:", note);
-        if (ref.current) {
-            const modal = new bootstrap.Modal(ref.current);
-            modal.show();
-        }
-        setnote(currentnote)
-    }
-    const [note, setnote] = useState({ etitle: "", edescription: "", etag: "" });
+        console.log("Updating Note:", currentnote);
+        setnote({
+            id: currentnote._id || "",
+            etitle: currentnote.title || "",
+            edescription: currentnote.description || "",
+            etag: currentnote.tag || ""
+        });
+    
+    
+
+        // Show modal properly
+        const modal = new bootstrap.Modal(document.getElementById('exampleModal'));
+        modal.show();
+    };
+
+    const [note, setnote] = useState({ id: "", etitle: "", edescription: "", etag: "" });
     const usernote = (e) => {
         e.preventDefault(); // Prevents page reload
 
-        if (note.title.trim() === "" || note.description.trim() === "") {
+        if ((note.etitle || "").trim() === "" || (note.edescription || "").trim() === "") {
             alert("Title and Description cannot be empty!");
             return;
         }
-        console.log("updated note",note)
-        setnote({ title: "", description: "", tag: "" }); // Reset fields
+        console.log("updated note", note)
+        editnote(note.id, note.etitle, note.edescription, note.etag);
+        const modalElement = document.getElementById('exampleModal');
+        const modalInstance = bootstrap.Modal.getInstance(modalElement);
+        modalInstance.hide();
+
+        setnote({ id: "", etitle: "", edescription: "", etag: "" });
     };
 
     const onchange = (e) => {
@@ -60,9 +74,9 @@ export default function Notes() {
                                         type="text"
                                         className="form-control"
                                         id="etitle"
-                                        name="title"
+                                        name="etitle"
                                         autoComplete="off"
-                                        value={note.title}
+                                        value={note.etitle}
                                         onChange={onchange}
                                     />
                                 </div>
@@ -74,9 +88,9 @@ export default function Notes() {
                                         type="text"
                                         className="form-control"
                                         id="edescription"
-                                        name="description"
+                                        name="edescription"
                                         autoComplete="off"
-                                        value={note.description}
+                                        value={note.edescription}
                                         onChange={onchange}
                                     />
                                 </div>
@@ -88,9 +102,9 @@ export default function Notes() {
                                         type="text"
                                         className="form-control"
                                         id="etag"
-                                        name="tag"
+                                        name="etag"
                                         autoComplete="off"
-                                        value={note.tag}
+                                        value={note.etag}
                                         onChange={onchange}
                                     />
                                 </div>
@@ -98,7 +112,7 @@ export default function Notes() {
                             </form>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button ref={refclose} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <button onClick={usernote} type="button" className="btn btn-primary">Save changes</button>
                         </div>
                     </div>
@@ -110,13 +124,7 @@ export default function Notes() {
                 {notes.map((note) => {
                     return <Notesitem key={note._id} updatenote={updatenote} note={note} />
                 })}
-                {/* {notes.map((note) =>
-                    note._id ? (
-                        <Notesitem key={note._id} note={note} />
-                    ) : (
-                        <div key={Math.random()}>Invalid Note</div>
-                    )
-                )} */}
+
 
             </div>
         </>
