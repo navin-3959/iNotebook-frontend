@@ -5,7 +5,8 @@ import Home from './components/Home'
 import About from './components/About' // Import About component
 import Notestate from './context/notes/Notestate'
 import Alert from './components/Alert'
-
+import Login from './components/Login'
+import Signup from './components/Signup'
 function App() {
   return (
     <Router>
@@ -16,6 +17,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/Signup" element={<Signup />} />
       </Routes>
       </div>
     </Notestate>

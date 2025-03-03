@@ -42,7 +42,14 @@ export default function Notes() {
         editnote(note.id, note.etitle, note.edescription, note.etag);
         const modalElement = document.getElementById('exampleModal');
         const modalInstance = bootstrap.Modal.getInstance(modalElement);
-        modalInstance.hide();
+        if (modalInstance) {
+            modalInstance.hide();
+            
+            // Delay focus reset slightly to ensure modal hides first
+            setTimeout(() => {
+                document.body.focus(); // Shifts focus away from modal elements
+            }, 50);
+        }
 
         setnote({ id: "", etitle: "", edescription: "", etag: "" });
     };
