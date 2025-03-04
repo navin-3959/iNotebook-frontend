@@ -40,6 +40,8 @@ const Signup = () => {
 
   return (
     <div className="container">
+        <h2>Create an account to use iNotebook</h2>
+
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="name">Name</label>

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 /* eslint-disable no-unused-vars */
 import notecontext from "../context/notes/Notecontext";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -9,8 +10,10 @@ export default function Notes() {
 
     const context = useContext(notecontext)
     const { notes, addnote, getnotes, editnote } = context;
+    
+      
     useEffect(() => {
-        getnotes()
+            getnotes()
     }, []);
     const refclose = useRef(null)
     const ref = useRef(null)
@@ -22,8 +25,8 @@ export default function Notes() {
             edescription: currentnote.description || "",
             etag: currentnote.tag || ""
         });
-    
-    
+
+
 
         // Show modal properly
         const modal = new bootstrap.Modal(document.getElementById('exampleModal'));
@@ -44,7 +47,7 @@ export default function Notes() {
         const modalInstance = bootstrap.Modal.getInstance(modalElement);
         if (modalInstance) {
             modalInstance.hide();
-            
+
             // Delay focus reset slightly to ensure modal hides first
             setTimeout(() => {
                 document.body.focus(); // Shifts focus away from modal elements

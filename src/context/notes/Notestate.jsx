@@ -22,40 +22,46 @@ const Notestate = (props) => {
         const json = await response.json()
         
         setnotes(json)
-        // setnotes([...new Map(json.map(n => [n._id, n])).values()]);
     }
 
     //Add a note 
     const addnote = async (title, description, tag) => {
-        //api call
-
-        const response = await fetch(`${host}/api/notes/addnote/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjdiMzU0MGExMWUxYmRjNjc5YzBhMmMyIn0sImlhdCI6MTczOTgwNTcwNn0.51p92DdyUVyV2Uq8M2U1LQQNurGEFTHbkC9WvjosL-8"
-            },
-            body: JSON.stringify({ title, description, tag })
-        })
-        const json = await response.json()
-        console.log("Before adding:", notes);
-        let note = await response.json()
-         note = {
-            "_id": "67b3611cbbca821675cf7248",
-            "user": "67b3540a11e1bdc679c0a2c2a",
-            "title": title,
-            "description": description,
-            "tag": tag,
-            "date": "2025-02-17T16:17:32.072Z",
-            "__v": 0
+        try {
+            console.log("Sending request to API...");
+            const token = localStorage.getItem("token"); // Get token from local storage
+            if (!token) {
+                alert("Please login first")
+                throw new Error("No auth token found. Please log in.");
+                
+            }
+    
+            console.log("Using token:", token);
+            const response = await fetch(`${host}/api/notes/addnote/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "auth-token": token
+                },
+                body: JSON.stringify({ title, description, tag }) // Ensure valid JSON
+            });
+    
+            if (!response.ok) {
+                // If response is not okay, log error details
+                const errorMessage = await response.text();
+                throw new Error(`HTTP error! Status: ${response.status}, Response: ${errorMessage}`);
+            }
+    
+            const json = await response.json(); // Read API response
+            console.log("API Response:", json);
+    
+            // Ensure state updates correctly
+            setnotes((prevNotes) => [...prevNotes, json]);
+    
+        } catch (error) {
+            console.error("Error adding note:", error.message);
         }
-        setnotes(notes.concat(note))
-        // setnotes(prevNotes => {
-        //     const uniqueNotes = [...new Map([...prevNotes, note].map(n => [n._id, n])).values()];
-        //     return uniqueNotes;
-        // });
-
-    }
+    };
+    
 
     // delete a note 
     const deletenote = async (id) => {
